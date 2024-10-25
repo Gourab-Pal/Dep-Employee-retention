@@ -91,8 +91,16 @@ button:hover {
 
 .salary {
     font-size: 18px;
-    color: #4caf50;
 }
+
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
+}
+
 
 .github-link {
     margin-top: 20px;

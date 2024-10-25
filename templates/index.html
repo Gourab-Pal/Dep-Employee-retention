@@ -58,7 +58,7 @@
             {% if my_pred is not none %}
             <div class="result">
                 <h2>Predicted output:</h2>
-                <p class="salary">{{ my_pred }} </p>
+                <p class="salary {% if my_pred == 'Stayed' %}green{% else %}red{% endif %}">{{ my_pred }}</p>
             </div>
             {% endif %}
             <div class="github-link">
