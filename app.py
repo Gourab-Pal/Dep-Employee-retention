@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import pickle
 import pandas as pd
+import numpy as np
 
 #import salary
 
@@ -19,16 +20,41 @@ def hello() :
         work_accident = int(request.form["work_accident"])
         promotion_last_5years = int(request.form["promotion_last_5years"])
         salary = int(request.form["salary"])
-        department_IT = int(request.form["department_IT"])
-        department_RandD = int(request.form["department_RandD"])
-        department_accounting = int(request.form["department_accounting"])
-        department_hr = int(request.form["department_hr"])
-        department_management = int(request.form["department_management"])
-        department_marketing = int(request.form["department_marketing"])
-        department_product_mng = int(request.form["department_product_mng"])
-        department_sales = int(request.form["department_sales"])
-        department_support = int(request.form["department_support"])
-        department_technical = int(request.form["department_technical"])
+        department = request.form["department"]
+
+        department_list = np.zeros(10)
+
+        if(department=="department_IT"):
+            department_list = np.zeros(10)
+            department_list[0] = 1
+        if(department=="department_RandD"):
+            department_list = np.zeros(10)
+            department_list[1] = 1
+        if(department=="department_accounting"):
+            department_list = np.zeros(10)
+            department_list[2] = 1
+        if(department=="department_hr"):
+            department_list = np.zeros(10)
+            department_list[3] = 1
+        if(department=="department_management"):
+            department_list = np.zeros(10)
+            department_list[4] = 1
+        if(department=="department_marketing"):
+            department_list = np.zeros(10)
+            department_list[5] = 1
+        if(department=="department_product_mng"):
+            department_list = np.zeros(10)
+            department_list[6] = 1
+        if(department=="department_sales"):
+            department_list = np.zeros(10)
+            department_list[7] = 1
+        if(department=="department_support"):
+            department_list = np.zeros(10)
+            department_list[8] = 1
+        if(department=="department_technical"):
+            department_list = np.zeros(10)
+            department_list[9] = 1
+
 
         model = pickle.load(open('model.pkl','rb'))
         data = {
@@ -40,16 +66,16 @@ def hello() :
             'work_accident': [work_accident],
             'promotion_last_5years': [promotion_last_5years],
             'salary': [salary],
-            'department_IT': [department_IT],
-            'department_RandD': [department_RandD],
-            'department_accounting': [department_accounting],
-            'department_hr': [department_hr],
-            'department_management': [department_management],
-            'department_marketing': [department_marketing],
-            'department_product_mng': [department_product_mng],
-            'department_sales': [department_sales],
-            'department_support': [department_support],
-            'department_technical': [department_technical]
+            'department_IT': [department_list[0]],
+            'department_RandD': [department_list[1]],
+            'department_accounting': [department_list[2]],
+            'department_hr': [department_list[3]],
+            'department_management': [department_list[4]],
+            'department_marketing': [department_list[5]],
+            'department_product_mng': [department_list[6]],
+            'department_sales': [department_list[7]],
+            'department_support': [department_list[8]],
+            'department_technical': [department_list[9]]
         }
         prediction = model.predict(pd.DataFrame(data))
         prediction = int(prediction)

@@ -6,64 +6,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Turnover Prediction</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <!-- Font Awesome for Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 
 <body>
     <div class="container">
         <div class="form-card">
-            <h1>Salifort Motors Employee Turnover Prediction</h1>
-            <p>Enter employee data below:</p>
+            <h1 style="text-align: center;">Salifort Motors Employee Turnover Prediction</h1>
+            <div class="model-details">
+                <div class="detail-item">
+                    <strong>Model Used:</strong> Random Forest
+                </div>
+                <div class="detail-item">
+                    <strong>Accuracy:</strong> 90%
+                </div>
+                <div class="detail-item">
+                    <strong>Precision:</strong> 88%
+                </div>
+                <div class="detail-item">
+                    <strong>Recall:</strong> 85%
+                </div>
+                <div class="detail-item">
+                    <strong>F1 Score:</strong> 91%
+                </div>
+                <div class="detail-item">
+                    <strong>ROC AUC:</strong> 95%
+                </div>
+            </div>
+                      
             <form action="/" method="POST">
-                <div class="input-group">
+                <!-- Grid layout for input fields -->
+                <div class="grid-container">
                     <input type="text" name="satisfaction_level" placeholder="Satisfaction score (0.0 - 1.0)" required>
                     <input type="text" name="last_evaluation" placeholder="Last evaluation score (0.0 - 1.0)" required>
-                </div>
-                <div class="input-group">
                     <input type="number" name="number_project" placeholder="Total number of projects" min="0" required>
-                    <input type="number" name="average_monthly_hours" placeholder="Average monthly working hours" min="0" required>
+                    <input type="number" name="average_monthly_hours" placeholder="Avg. monthly working hours" min="0"
+                        required>
+                    <input type="number" name="tenure" placeholder="Working tenure (years)" min="0" required>
                 </div>
-                <div class="input-group">
-                    <input type="number" name="tenure" placeholder="Tenure in years" min="0" required>
-                    <input type="number" name="work_accident" placeholder="Work accident (0 for No, 1 for Yes)" min="0" required>
+
+                <!-- Flexbox layout for radio buttons -->
+                <div class="radio-container">
+                    <div class="radio-group">
+                        <label>Work accident:</label>
+                        <div class="radio-row">
+                            <input type="radio" name="work_accident" value="1" required> <span>Yes</span>
+                            <input type="radio" name="work_accident" value="0" required> <span>No</span>
+                        </div>
+                    </div>
+
+                    <div class="radio-group">
+                        <label>Promoted in last 5 years:</label>
+                        <div class="radio-row">
+                            <input type="radio" name="promotion_last_5years" value="1" required> <span>Yes</span>
+                            <input type="radio" name="promotion_last_5years" value="0" required> <span>No</span>
+                        </div>
+                    </div>
+
+                    <div class="radio-group salary">
+                        <label>Salary slab:</label>
+                        <div class="radio-row">
+                            <input type="radio" name="salary" value="0" required> <span>Low</span>
+                            <input type="radio" name="salary" value="1" required> <span>Medium</span>
+                            <input type="radio" name="salary" value="2" required> <span>High</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <input type="number" name="promotion_last_5years" placeholder="Promotion in last 5 years (0 for No, 1 for Yes)" min="0" required>
-                    <input type="number" name="salary" placeholder="Salary slab (e.g., 30000)" min="0" required>
-                </div>
-                <div class="input-group">
-                    <input type="number" name="department_IT" placeholder="Department IT (0 for No, 1 for Yes)" min="0" required>
-                    <input type="number" name="department_RandD" placeholder="Department R&D (0 for No, 1 for Yes)" min="0" required>
-                </div>
-                <div class="input-group">
-                    <input type="number" name="department_accounting" placeholder="Department Accounting (0 for No, 1 for Yes)" min="0" required>
-                    <input type="number" name="department_hr" placeholder="Department HR (0 for No, 1 for Yes)" min="0" required>
-                </div>
-                <div class="input-group">
-                    <input type="number" name="department_management" placeholder="Department Management (0 for No, 1 for Yes)" min="0" required>
-                    <input type="number" name="department_marketing" placeholder="Department Marketing (0 for No, 1 for Yes)" min="0" required>
-                </div>
-                <div class="input-group">
-                    <input type="number" name="department_product_mng" placeholder="Department Product Management (0 for No, 1 for Yes)" min="0" required>
-                    <input type="number" name="department_sales" placeholder="Department Sales (0 for No, 1 for Yes)" min="0" required>
-                </div>
-                <div class="input-group">
-                    <input type="number" name="department_support" placeholder="Department Support (0 for No, 1 for Yes)" min="0" required>
-                    <input type="number" name="department_technical" placeholder="Department Technical (0 for No, 1 for Yes)" min="0" required>
+
+                <div class="dropdown-group">
+                    <label for="department">Department:</label>
+                    <select name="department" required>
+                        <option value="">Select a department</option>
+                        <option value="department_IT">IT</option>
+                        <option value="department_RandD">R&D</option>
+                        <option value="department_accounting">Accounting</option>
+                        <option value="department_hr">HR</option>
+                        <option value="department_management">Management</option>
+                        <option value="department_marketing">Marketing</option>
+                        <option value="department_product_mng">Product Management</option>
+                        <option value="department_sales">Sales</option>
+                        <option value="department_support">Support</option>
+                        <option value="department_technical">Technical</option>
+                    </select>
                 </div>
 
                 <button type="submit">Predict</button>
             </form>
+
             {% if my_pred is not none %}
-            <div class="result">
+            <div class="result-card">
                 <h2>Predicted output:</h2>
                 <p class="salary {% if my_pred == 'Stayed' %}green{% else %}red{% endif %}">{{ my_pred }}</p>
             </div>
             {% endif %}
+
+
             <div class="github-link">
                 <i class="fab fa-github"></i>
-                <a href="https://github.com/Gourab-Pal/Dep-Employee-retention" target="_blank">View this project on GitHub</a>
+                <a href="https://github.com/Gourab-Pal/Dep-Employee-retention" target="_blank">View this project on
+                    GitHub</a>
             </div>
         </div>
     </div>
